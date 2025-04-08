@@ -19,6 +19,13 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
+    
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_framework.authtoken',
 
     'core',
     'users',
@@ -56,7 +63,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 ASGI_APPLICATION = 'backend.asgi.application'
 
-AUTH_USER_MODEL = 'users.User'
 
 # Database config will be overridden in dev/prod settings
 DATABASES = {}
@@ -76,6 +82,20 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+REST_USE_JWT = True  # dj-rest-auth uses JWT
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'optional'  # change to 'mandatory' if you want
+
+# Default user model
+AUTH_USER_MODEL = 'users.User'
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
