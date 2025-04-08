@@ -19,5 +19,11 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # dj-rest-auth built-in endpoints
+    path('api/auth/', include('dj_rest_auth.urls')),  # login, logout, token/refresh
+    path('api/auth/registration/', include('dj_rest_auth.registration.urls')),  # register + email
+
+    # custom user endpoints (like /me/)
     path('api/users/', include('users.urls')),
 ]
