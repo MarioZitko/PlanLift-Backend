@@ -7,7 +7,7 @@ SECRET_KEY = config('SECRET_KEY', default='unsafe-secret-key')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
     'core',
     'users',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -40,6 +41,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -89,10 +91,16 @@ AUTHENTICATION_BACKENDS = (
 )
 
 REST_USE_JWT = True  # dj-rest-auth uses JWT
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'optional'  # change to 'mandatory' if you want
+
+REST_AUTH = {
+    'SIGNUP_FIELDS': {
+        'email': {'required': True},
+        'username': {'required': False},
+    }
+}
 
 # Default user model
 AUTH_USER_MODEL = 'users.User'
